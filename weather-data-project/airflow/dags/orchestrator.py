@@ -50,5 +50,26 @@ with dag:
             docker_url='unix://var/run/docker.sock',
             auto_remove='success'
         )
-    
-    task1 >> task2
+    task3 = DockerOperator(
+        task_id='test_data_task',
+        image='ghcr.io/dbt-labs/dbt-postgres:1.9.latest',
+        command='test',
+        working_dir='/usr/app',
+        mounts=[
+            Mount(
+                source='/home/lenovo/repos/data-engineering-projects/weather-data-project/dbt/my_project',
+                target='/usr/app',
+                type='bind'
+            ),
+            Mount(
+                source='/home/lenovo/repos/data-engineering-projects/weather-data-project/dbt',
+                target='/root/.dbt/',
+                type='bind'
+            ),
+        ],
+        network_mode='superset_my_network',
+        docker_url='unix://var/run/docker.sock',
+        auto_remove='success'
+    )
+
+    task1 >> task2 >> task3

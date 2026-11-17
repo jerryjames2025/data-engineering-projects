@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: stg_weather_data
+    description: "Deduplicated staging table of weather observations normalized to local time."
+    columns:
+      - name: id
+        description: "Primary key from raw weather observations."
+        tests:
+          - unique
+          - not_null
+      - name: city
+        description: "City name where weather was observed."
+        tests:
+          - not_null
+      - name: temperature
+        description: "Observed temperature in Celsius."
+        tests:
+          - not_null
+      - name: weather_time_local
+        description: "Local timestamp of the weather observation."
+        tests:
+          - unique
+          - not_null
+
+  - name: daily_average
+    description: "Daily aggregated average temperature and wind speed per city."
+    columns:
+      - name: city
+        tests:
+          - not_null
+      - name: date
+        tests:
+          - not_null
+      - name: avg_temperature
+        tests:
+          - not_null
+      - name: avg_wind_speed
+        tests:
+          - not_null
+
+  - name: weather_report
+    description: "Final consumption-ready reporting table for Apache Superset dashboards."
+    columns:
+      - name: city
+        tests:
+          - not_null
+      - name: temperature
+        tests:
+          - not_null
+      - name: weather_time_local
+        tests:
+          - not_null

@@ -1,17 +1,19 @@
 version: 2
 
-
 sources:
   - name: dev
     database: db
     tables:
       - name: raw_weather_data
+        description: "Raw weather payloads ingested from Weatherstack API via Airflow."
         columns:
           - name: id
+            tests:
+              - unique
+              - not_null
           - name: city
+            tests:
+              - not_null
           - name: temperature
-          - name: weather_description
-          - name: wind_speed
-          - name: time
-          - name: inserted_at
-          - name: utc_offset
+            tests:
+              - not_null

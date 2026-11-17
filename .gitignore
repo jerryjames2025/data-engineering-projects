@@ -1,0 +1,17 @@
+# Virtual environments & Python cache
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Database files, logs & dbt build artifacts
+**/postgres/data/
+**/airflow/logs/
+**/dbt/logs/
+**/dbt/my_project/target/
+**/dbt/my_project/logs/
+**/dbt/my_project/dbt_packages/
+
+# Environment & secrets
+.env
+**/.env

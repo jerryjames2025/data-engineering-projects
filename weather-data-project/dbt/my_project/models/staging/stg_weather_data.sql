@@ -1,0 +1,15 @@
+{{config(
+    materialized='table',
+    unique_key='id'
+)}}
+
+
+with source as (
+    select * 
+    from {{source('dev', 'raw_weather_data')}}
+),
+de_dup as(select *,row_number() over(partition by time order by insert_at) as rn from source)
+
+
+select id,city,temperature,weather_description,wind_speed,time as weather_time_local,(insert_at + (utc_offset || 'hours')::interval)
+ as insert_at_local from de_dup where rn=1
